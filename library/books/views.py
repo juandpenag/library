@@ -22,3 +22,27 @@ def filter(request):
     return render(request, 'books/index.html', {
         "books": filtered_books
     })
+
+def add(request):
+    authorPOST = request.POST.get('authorship')
+    titlePOST = request.POST.get('title')
+    yearPOST = request.POST.get('year')
+    publisherPOST = request.POST.get('publisher')
+    categoryPOST = request.POST.get('category')
+    languagePOST = request.POST.get('language')
+
+    new_book = Books.objects.create(
+        authorship = authorPOST,
+        year = yearPOST,
+        title = titlePOST,
+        publisher = publisherPOST,
+        category = categoryPOST,
+        language = languagePOST
+        
+    )
+
+    new_book.save()
+
+    return render(request, "books/index.html", {
+        "books": Books.objects.all()
+    })
