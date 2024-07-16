@@ -8,8 +8,17 @@ def index(request):
         "books": Books.objects.all()
     })
 
-def add():
-    ...
+def filter(request):
+    category = request.GET.get('category')
+    language = request.GET.get('language')
 
-def search():
-    ...
+    filtered_books = Books.objects.all()
+
+    if category:
+        filtered_books = filtered_books.filter(category=category)
+    if language:
+        filtered_books = filtered_books.filter(language=language)
+
+    return render(request, 'books/index.html', {
+        "books": filtered_books
+    })

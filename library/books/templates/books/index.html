@@ -4,11 +4,55 @@
         <title>Library!</title>
     </head>
     <body>
-        <h1>Books!</h1>
+        <h1>There are your books!</h1>
+
+        <h3>Add a new book to your library!</h3>
+
+        <form action="{% url 'XXXXXX' %}" method="POST">
+            {% csrf_token %}
+
+            ???
+
+            <button type="submit">Filter</button>
+        </form>
+
+        <h3>Filters</h3>
+
+        <form action="{% url 'filter' %}" method="GET">
+
+            <label for="language">Language:</label>
+            <select name="language" id="language">
+                <option value="">All</option>
+                {% for language_key, language_display in Books.Languages.choices %}
+                    <option value="{{ language_key }}">
+                        {{ language_display }}
+                    </option>
+                {% endfor %}
+            </select>
+
+            <label for="category">Category:</label>
+            <select name="category" id="category">
+                <option value="">All</option>
+                {% for category_key, category_display in Books.LCC.choices %}
+                    <option value="{{ category_key }}">
+                        {{ category_display }}
+                    </option>
+                {% endfor %}
+            </select>
+
+            <button type="submit">Filter</button>
+        </form>
+
+        <h3>This is your library!</h3>
+
         <ul>
             {% for book in books %}
             <li>
                 {{ book }}
+            </li>
+            {% empty %}
+            <li>
+                No books found.
             </li>
             {% endfor %}
         </ul>

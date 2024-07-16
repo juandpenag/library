@@ -83,32 +83,20 @@ class Books(models.Model):
     
     language = models.CharField(
         max_length=3, 
-        choices=Languages, 
+        choices=Languages.choices, 
         verbose_name="Book's language", 
         help_text="Enter book's language", 
         db_index=True
         )
     
-    edition = models.IntegerField(
-        verbose_name="Book's edition", 
-        help_text="Enter book's edition", 
-        db_index=False
-        )
-    if edition > 1: 
-        original_year = models.IntegerField(
-            verbose_name="Book's first year of publication", 
-            help_text="Enter book's first year of publication", 
-            db_index=False
-            )
-
     def __str__(self):
         category_display = dict(LCC.choices)[self.category]
         language_display = dict(Languages.choices)[self.language]
 
-        if self.edition > 1:
-            return f"{self.authorship}. {self.year}({self.original_year}). {self.title} (ed. {self.edition}).  {self.publisher}. {category_display}. {language_display}."
-        else:
-            return f"{self.authorship} ({self.year}). {self.title}. {self.publisher}. {category_display}. {language_display}."
+        return (
+            f"{self.authorship} ({self.year}). {self.title}. {self.publisher}.\n"
+            f"{category_display}. {language_display}."
+        )
 
 """
 LAST NAME, First Name (year). Title. Publisher. Category. Language.
