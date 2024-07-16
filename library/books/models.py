@@ -51,13 +51,13 @@ class Books(models.Model):
         help_text="Enter author's name", 
         db_index=True, 
         on_delete=models.CASCADE
-        ) # Add M2M relationship
+        )
     
     year = models.PositiveIntegerField(
         verbose_name="Book's publication Year", 
         help_text="Enter book's year", 
         db_index=True
-        ) # Optimize size (max_length=4)
+        )
     
     title = models.CharField(
         max_length=150, 
@@ -88,11 +88,27 @@ class Books(models.Model):
         help_text="Enter book's language", 
         db_index=True
         )
+    
+    edition = models.IntegerField(
+        verbose_name="Book's edition", 
+        help_text="Enter book's edition", 
+        db_index=False
+        )
+    if edition > 1: 
+        original_year = models.IntegerField(
+            verbose_name="Book's first year of publication", 
+            help_text="Enter book's first year of publication", 
+            db_index=False
+            )
 
     def __str__(self):
         category_display = dict(LCC.choices)[self.category]
         language_display = dict(Languages.choices)[self.language]
-        return f"{self.authorship} ({self.year}). {self.title}. {self.publisher}. {category_display}. {language_display}."
+
+        if self.edition > 1:
+            return f"{self.authorship}. {self.year}({self.original_year}). {self.title} (ed. {self.edition}).  {self.publisher}. {category_display}. {language_display}."
+        else:
+            return f"{self.authorship} ({self.year}). {self.title}. {self.publisher}. {category_display}. {language_display}."
 
 """
 LAST NAME, First Name (year). Title. Publisher. Category. Language.
