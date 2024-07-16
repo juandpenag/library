@@ -44,15 +44,55 @@ class Authors(models.Model):
 
 
 class Books(models.Model):
-    authorship = models.ForeignKey(Authors, related_name="books", verbose_name="Book's authorship", help_text="Enter author's name", db_index=True, on_delete=models.CASCADE) # Add M2M relationship
-    year = models.PositiveIntegerField(verbose_name="Book's publication Year", help_text="Enter book's year", db_index=True) # Optimize size (max_length=4)
-    title = models.CharField(max_length=150, verbose_name="Book's title", help_text="Enter book's title")
-    publisher = models.ForeignKey(Publishers, verbose_name="Book's publisher", help_text="Enter publisher's name", db_index=True, on_delete=models.CASCADE)
-    category = models.CharField(max_length=1, choices=LCC.choices, verbose_name="Book's LCC", help_text="Enter book's LCC", db_index=True)
-    language = models.CharField(max_length=3, choices=Languages, verbose_name="Book's language", help_text="Enter book's language", db_index=True)
+    authorship = models.ForeignKey(
+        Authors, 
+        related_name="books", 
+        verbose_name="Book's authorship", 
+        help_text="Enter author's name", 
+        db_index=True, 
+        on_delete=models.CASCADE
+        ) # Add M2M relationship
+    
+    year = models.PositiveIntegerField(
+        verbose_name="Book's publication Year", 
+        help_text="Enter book's year", 
+        db_index=True
+        ) # Optimize size (max_length=4)
+    
+    title = models.CharField(
+        max_length=150, 
+        verbose_name="Book's title", 
+        help_text="Enter book's title"
+        )
+    
+    publisher = models.ForeignKey(
+        Publishers, 
+        verbose_name="Book's publisher", 
+        help_text="Enter publisher's name", 
+        db_index=True, 
+        on_delete=models.CASCADE
+        )
+    
+    category = models.CharField(
+        max_length=1, 
+        choices=LCC.choices, 
+        verbose_name="Book's LCC", 
+        help_text="Enter book's LCC", 
+        db_index=True
+        )
+    
+    language = models.CharField(
+        max_length=3, 
+        choices=Languages, 
+        verbose_name="Book's language", 
+        help_text="Enter book's language", 
+        db_index=True
+        )
 
     def __str__(self):
-        return f"{self.authorship} ({self.year}). {self.title}. {self.publisher}. {self.category}."
+        category_display = dict(LCC.choices)[self.category]
+        language_display = dict(Languages.choices)[self.language]
+        return f"{self.authorship} ({self.year}). {self.title}. {self.publisher}. {category_display}. {language_display}."
 
 """
 LAST NAME, First Name (year). Title. Publisher. Category. Language.
