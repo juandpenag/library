@@ -7,24 +7,40 @@ def index(request):
     return render(request, "books/index.html", {
         "books": Books.objects.all(),
         "categories": Books.LCC.choices,
-        "languages": Books.Languages.choices
+        "languages": Books.Languages.choices,
+        "authors_list": Authors.objects.all(),
+        "publishers_list": Publishers.objects.all()    
     })
 
 def filter(request):
-    category = request.GET.get('category')
-    language = request.GET.get('language')
+    authorGET = request.GET.get('authorship')
+    titleGET = request.GET.get('title')
+    publisherGET = request.GET.get('publisher')
+    yearGET = request.GET.get('year')
+    categoryGET = request.GET.get('category')
+    languageGET = request.GET.get('language')
 
     filtered_books = Books.objects.all()
 
-    if category:
-        filtered_books = filtered_books.filter(category=category)
-    if language:
-        filtered_books = filtered_books.filter(language=language)
+    if authorGET:
+        filtered_books = filtered_books.filter(authoship=authorGET)
+    if titleGET:
+        filtered_books = filtered_books.filter(title=titleGET)
+    if publisherGET:
+        filtered_books = filtered_books.filter(publisher=publisherGET)
+    if yearGET:
+        filtered_books = filtered_books.filter(year=yearGET)
+    if categoryGET:
+        filtered_books = filtered_books.filter(category=categoryGET)
+    if languageGET:
+        filtered_books = filtered_books.filter(language=languageGET)
 
     return render(request, 'books/index.html', {
         "books": filtered_books,
         "categories": Books.LCC.choices,
-        "languages": Books.Languages.choices
+        "languages": Books.Languages.choices,
+        "authors_list": Authors.objects.all(),
+        "publishers_list": Publishers.objects.all()
     })
 
 def add(request):
@@ -54,5 +70,7 @@ def add(request):
     return render(request, "books/index.html", {
         "books": Books.objects.all(),
         "categories": Books.LCC.choices,
-        "languages": Books.Languages.choices
+        "languages": Books.Languages.choices,
+        "authors_list": Authors.objects.all(),
+        "publishers_list": Publishers.objects.all()
     })

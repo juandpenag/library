@@ -4,27 +4,23 @@
         <title>Library!</title>
     </head>
     <body>
-        <h1>There are your books!</h1>
+        <h1>These are your books!</h1>
 
         <h3>Add a new book to your library!</h3>
 
         <form action="{% url 'add' %}" method="POST">
             {% csrf_token %}
 
-            <label for="authorship">Author:</label>
-            <input type="text" id="authorship" name="authorship" required>
+            <input type="text" placeholder="Author" id="authorship" name="authorship" required>
             
-            <label for="title">Title:</label>
-            <input type="text" id="title" name="title" required>
+            <input type="text" placeholder="Title" id="title" name="title" required>
             
-            <label for="year">Year:</label>
-            <input type="number" id="year" name="year" required>
+            <input type="number" placeholder="Year" id="year" name="year" required>
 
-            <label for="publisher">Publisher:</label>
-            <input type="text" id="publisher" name="publisher" required>
+            <input type="text" placeholder="Publisher" id="publisher" name="publisher" required>
 
-            <label for="category">Category:</label>
             <select name="category" id="category">
+                <option disabled selected>Category</option>
                 <option value="">All</option>
                 {% for key, display in categories %}
                     <option value="{{ key }}">
@@ -33,8 +29,8 @@
                 {% endfor %}
             </select>
 
-            <label for="language">Language:</label>
             <select name="language" id="language">
+                <option disabled selected>Language</option>
                 <option value="">All</option>
                 {% for key, display in languages %}
                     <option value="{{ key }}">
@@ -50,8 +46,30 @@
 
         <form action="{% url 'filter' %}" method="GET">
 
-            <label for="category">Category:</label>
+            <select name="authorship" id="authorship">
+                <option disabled selected>Author</option>
+                <option value="">All</option>
+                {% for author in authors_list %}
+                    <option value="{{ author }}">
+                        {{ author }}
+                    </option>
+                {% endfor %}
+            </select>
+
+            <input type="number" placeholder="Year" id="year" name="year" required>
+
+            <select name="publisher" id="publisher">
+                <option disabled selected>Publisher</option>
+                <option value="">All</option>
+                {% for publisher in publishers_list %}
+                    <option value="{{ publisher }}">
+                        {{ publisher }}
+                    </option>
+                {% endfor %}
+            </select>
+
             <select name="category" id="category">
+                <option disabled selected>Category</option>
                 <option value="">All</option>
                 {% for key, display in categories %}
                     <option value="{{ key }}">
@@ -60,9 +78,8 @@
                 {% endfor %}
             </select>
 
-            
-            <label for="language">Language:</label>
             <select name="language" id="language">
+                <option disabled selected>Language</option>
                 <option value="">All</option>
                 {% for key, display in languages %}
                     <option value="{{ key }}">

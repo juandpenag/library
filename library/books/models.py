@@ -94,8 +94,7 @@ class Books(models.Model):
         language_display = dict(Books.Languages.choices).get(self.language, 'Unknown Language')
 
         return (
-            f"{self.authorship} ({self.year}). {self.title}. {self.publisher}.\n"
-            f"{category_display}. {language_display}."
+            f"{self.authorship} ({self.year}). {self.title}. {self.publisher}.\n{category_display}. {language_display}."
         )
 
 """
