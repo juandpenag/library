@@ -26,9 +26,9 @@
             <label for="category">Category:</label>
             <select name="category" id="category">
                 <option value="">All</option>
-                {% for category_key, category_display in Books.LCC.choices %}
-                    <option value="{{ category_key }}">
-                        {{ category_display }}
+                {% for key, display in categories %}
+                    <option value="{{ key }}">
+                        {{ display }}
                     </option>
                 {% endfor %}
             </select>
@@ -36,9 +36,9 @@
             <label for="language">Language:</label>
             <select name="language" id="language">
                 <option value="">All</option>
-                {% for language_key, language_display in Books.Languages.choices %}
-                    <option value="{{ language_key }}">
-                        {{ language_display }}
+                {% for key, display in languages %}
+                    <option value="{{ key }}">
+                        {{ display }}
                     </option>
                 {% endfor %}
             </select>
@@ -50,22 +50,23 @@
 
         <form action="{% url 'filter' %}" method="GET">
 
-            <label for="language">Language:</label>
-            <select name="language" id="language">
+            <label for="category">Category:</label>
+            <select name="category" id="category">
                 <option value="">All</option>
-                {% for language_key, language_display in Books.Languages.choices %}
-                    <option value="{{ language_key }}">
-                        {{ language_display }}
+                {% for key, display in categories %}
+                    <option value="{{ key }}">
+                        {{ display }}
                     </option>
                 {% endfor %}
             </select>
 
-            <label for="category">Category:</label>
-            <select name="category" id="category">
+            
+            <label for="language">Language:</label>
+            <select name="language" id="language">
                 <option value="">All</option>
-                {% for category_key, category_display in Books.LCC.choices %}
-                    <option value="{{ category_key }}">
-                        {{ category_display }}
+                {% for key, display in languages %}
+                    <option value="{{ key }}">
+                        {{ display }}
                     </option>
                 {% endfor %}
             </select>

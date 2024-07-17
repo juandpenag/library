@@ -90,8 +90,8 @@ class Books(models.Model):
         )
     
     def __str__(self):
-        category_display = dict(Books.LCC.choices)[self.category]
-        language_display = dict(Books.Languages.choices)[self.language]
+        category_display = dict(Books.LCC.choices).get(self.category, 'Unknown Category')
+        language_display = dict(Books.Languages.choices).get(self.language, 'Unknown Language')
 
         return (
             f"{self.authorship} ({self.year}). {self.title}. {self.publisher}.\n"
