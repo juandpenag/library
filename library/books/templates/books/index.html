@@ -3,8 +3,18 @@
     <head>
         <title>Library!</title>
     </head>
+    <style>
+        h1 { 
+        text-align: center;
+        }
+        h3 {
+            text-align: center;
+        }
+
+    </style>
+
     <body>
-        <h1>These are your books!</h1>
+        <h1>THIS IS YOUR LIBRARY!</h1>
 
         <h3>Add a new book to your library!</h3>
 
@@ -54,7 +64,7 @@
                         {{ author }}
                     </option>
                 {% endfor %}
-            </select>
+            </select><br>
 
             <input type="number" placeholder="Year" id="year" name="year" required>
 
@@ -91,7 +101,7 @@
             <button type="submit">Filter</button>
         </form>
 
-        <h3>This is your library!</h3>
+        <h3>This are your books!</h3>
 
         <ul>
             {% for book in books %}
