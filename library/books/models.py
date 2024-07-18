@@ -20,7 +20,7 @@ class Books(models.Model):
         GENERAL_WORK = 'A', 'General Works'
         PHILOSOPHY_PSYCHOLOGY_RELIGION = 'B', 'Philosophy, Psychology, Religion'
         AUXILIARY_SCIENCES_OF_HISTORY = 'C', 'Auxiliary Sciences of History'
-        WORLD_HISTORY_AND_HISTORY_OF_CONTINENTS = 'D', 'World History and History of Europe, Asia, Africa, Australia, New Zealand, etc.'
+        WORLD_HISTORY_AND_HISTORY_OF_CONTINENTS = 'D', 'World History and History of Europe, Asia, Africa, Australia, New Zealand, etc'
         HISTORY_OF_AMERICA = 'E', 'History of America'
         HISTORY_OF_THE_AMERICAS = 'F', 'History of the Americas'
         GEOGRAPHY_ANTHROPOLOGY_AND_RECREATION = 'G', 'Geography, Anthropology, and Recreation'
