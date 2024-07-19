@@ -1,77 +1,110 @@
 from django.shortcuts import render
-from django.http import HttpResponse
 from .models import Books, Authors, Publishers
 from django.db import IntegrityError, DatabaseError
 import re
 
 # Create your views here.
 def index(request):
+
+    if request.method == 'GET':
+        try:
+            parameters = {
+                "author": request.GET.get('authorship'),
+                "title": request.GET.get('title'),
+                "publisher": request.GET.get('publisher'),
+                "year": request.GET.get('year'),
+                "category": request.GET.get('category'),
+                "language": request.GET.get('language')
+                }
+            context = filter(parameters)
+        except Exception as e:
+            context = {"error_message": e}
+
+    elif request.method == 'POST':
+        try:
+            parameters = {
+                "author": request.POST.get('authorship'),
+                "year": request.POST.get('year'),
+                "title": request.POST.get('title'),
+                "publisher": request.POST.get('publisher'),
+                "category": request.POST.get('category'),
+                "language": request.POST.get('language')
+            }
+            context = add(parameters)
+        except Exception as e:
+            context = {"error_message": e}
+
+    if len(context) > 1:
+        return render(request, "books/index.html", context)
+    else:
+        return render(request, "books/error.html", context)
+
+
+def filter(parameters):
     try:
-        if request.method == 'GET':
-            filtered_books = Books.objects.all()
-            authorGET = request.GET.get('authorship')
-            titleGET = request.GET.get('title')
-            publisherGET = request.GET.get('publisher')
-            yearGET = request.GET.get('year')
-            categoryGET = request.GET.get('category')
-            languageGET = request.GET.get('language')
+        filtered_books = Books.objects.all()
 
-            if authorGET:
-                filtered_books = filtered_books.filter(authorship__name=authorGET) 
-            if titleGET:
-                filtered_books = filtered_books.filter(title__regex=titleGET)
-            if publisherGET:
-                publisher = Publishers.objects.filter(name=publisherGET).first()
-                if publisher:
-                    filtered_books = filtered_books.filter(publisher=publisher)
-            if yearGET:
-                filtered_books = filtered_books.filter(year=yearGET)
-            if categoryGET:
-                filtered_books = filtered_books.filter(category=categoryGET)
-            if languageGET:
-                filtered_books = filtered_books.filter(language=languageGET)
+        if parameters['author']: # Compare this code with publisher
+            filtered_books = filtered_books.filter(authorship__name=parameters['author']) 
 
-            context  = {
-                "books": filtered_books,
-                "categories": Books.LCC.choices,
-                "languages": Books.Languages.choices,
-                "authors_list": Authors.objects.all(),
-                "publishers_list": Publishers.objects.all()
-            }
-        elif request.method == 'POST':
-            author_name = request.POST.get('authorship')
-            publisher_name = request.POST.get('publisher')
-            titlePOST = request.POST.get('title')
-            yearPOST = request.POST.get('year')
-            categoryPOST = request.POST.get('category')
-            languagePOST = request.POST.get('language')
+        if parameters['title']:
+            filtered_books = filtered_books.filter(title__regex=parameters['title'])
+            
+        if parameters['year']:
+            filtered_books = filtered_books.filter(year=parameters['year'])
 
-            if not(author_name and publisher_name and titlePOST and yearPOST and categoryPOST and languagePOST):
-                return render(request, "books/error.html", {"error_message": "Go back and fill them all."})
+        if parameters['publisher']:
+            publisher = Publishers.objects.filter(name=parameters['publisher']).first()
+            if publisher:
+                filtered_books = filtered_books.filter(publisher=publisher)
 
-            authorPOST, created = Authors.objects.get_or_create(name=author_name)
-            publisherPOST, created = Publishers.objects.get_or_create(name=publisher_name)
+        if parameters['category']:
+            filtered_books = filtered_books.filter(category=parameters['category'])
 
-            new_book = Books.objects.create(
-                authorship = authorPOST,
-                year = yearPOST,
-                title = titlePOST,
-                publisher = publisherPOST,
-                category = categoryPOST,
-                language = languagePOST            
-            )
-
-            new_book.save()
-
-            context  = {
-                "books": Books.objects.all(),
-                "categories": Books.LCC.choices,
-                "languages": Books.Languages.choices,
-                "authors_list": Authors.objects.all(),
-                "publishers_list": Publishers.objects.all()
-            }
+        if parameters['language']:
+            filtered_books = filtered_books.filter(language=parameters['language'])
 
     except IntegrityError or DatabaseError as e:
-        return render(request, "books/error.html", {"error_message": e})
+        return {"error_message": e}
 
-    return render(request, "books/index.html", context)
+    return {
+            "books": filtered_books,
+            "categories": Books.LCC.choices,
+            "languages": Books.Languages.choices,
+            "authors_list": Authors.objects.all(),
+            "publishers_list": Publishers.objects.all()
+        }
+
+def add(parameters): # author_name and publisher_name are in the dict
+
+    if any(value is None for value in parameters.values()):
+        return {"error_message": "All parameters are needed. Try again."}
+
+    try:
+        authorPOST, created = Authors.objects.get_or_create(name=parameters['author'])
+        parameters['author'] = authorPOST
+
+        publisherPOST, created = Publishers.objects.get_or_create(name=parameters['publisher'])
+        parameters['publisher'] = publisherPOST
+
+        new_book = Books.objects.create(
+            authorship = parameters['author'],
+            year = parameters['year'],
+            title = parameters['title'],
+            publisher = parameters['publisher'],
+            category = parameters['category'],
+            language = parameters['language']            
+        )
+
+        new_book.save()
+
+    except IntegrityError or DatabaseError as e:
+        return {"error_message": e}
+    
+    return {
+        "books": Books.objects.all(),
+        "categories": Books.LCC.choices,
+        "languages": Books.Languages.choices,
+        "authors_list": Authors.objects.all(),
+        "publishers_list": Publishers.objects.all()
+    }
