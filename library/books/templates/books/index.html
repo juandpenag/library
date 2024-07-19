@@ -26,6 +26,10 @@
         form {
             text-align:center;
         }
+
+        button {
+            text-align:center;
+        }
         
     </style>
 
@@ -37,13 +41,13 @@
         <form action="{% url 'index' %}" method="POST">
             {% csrf_token %}
 
-            <input type="text" placeholder="Author" id="authorship" name="authorship" required>
+            <input type="text" autofocus placeholder="Author" id="authorship" name="authorship" required>
             
-            <input type="text" placeholder="Title" id="title" name="title" required>
+            <input type="text" autofocus placeholder="Title" id="title" name="title" required>
             
-            <input type="number" placeholder="Year" id="year" name="year" required>
+            <input type="number" autofocus placeholder="Year" id="year" name="year" required>
 
-            <input type="text" placeholder="Publisher" id="publisher" name="publisher" required>
+            <input type="text" autofocus placeholder="Publisher" id="publisher" name="publisher" required>
 
             <select name="category" id="category">
                 <option disabled selected>Category</option>
@@ -64,7 +68,9 @@
                     </option>
                 {% endfor %}
             </select>
-
+            
+            <br>
+            <br>
             <button type="submit">Submit</button>
         </form>
 
@@ -82,9 +88,9 @@
                 {% endfor %}
             </select>
 
-            <input type="text" placeholder="Title" id="title" name="title">
+            <input type="text" autofocus placeholder="Title" id="title" name="title">
 
-            <input type="number" placeholder="Year" id="year" name="year">
+            <input type="number" autofocus placeholder="Year" id="year" name="year">
 
             <select name="publisher" id="publisher">
                 <option disabled selected>Publisher</option>
@@ -116,6 +122,8 @@
                 {% endfor %}
             </select>
 
+            <br>
+            <br>
             <button type="submit">Filter</button>
         </form>
 
