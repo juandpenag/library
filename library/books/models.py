@@ -88,13 +88,13 @@ class Books(models.Model):
         help_text="Enter book's language", 
         db_index=True
         )
-    
+
     def __str__(self):
         category_display = dict(Books.LCC.choices).get(self.category, 'Unknown Category')
-        language_display = dict(Books.Languages.choices).get(self.language, 'Unknown Language')
+        language_display = dict(Books.Languages.cbhoices).get(self.language, 'Unknown Language')
 
         return (
-            f"{self.authorship} ({self.year}). {self.title}. {self.publisher}.\n{category_display}. {language_display}."
+            f"{self.authorship} ({self.year}). {self.title}. {self.publisher}. {category_display}. {language_display}."
         )
 
 """
